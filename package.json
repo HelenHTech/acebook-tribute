@@ -1,0 +1,25 @@
+{
+  "name": "acebook-tribute",
+  "version": "1.0.0",
+  "description": "an acebook app",
+  "main": "app.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HelenHTech/acebook-tribute.git"
+  },
+  "author": "Helen, Manisha, Mel",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/HelenHTech/acebook-tribute/issues"
+  },
+  "homepage": "https://github.com/HelenHTech/acebook-tribute#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
