@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 const port = process.env.PORT || 8080;
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/test', {useNewUrlParser: true});
+mongoose.connect('mongodb://localhost/acebook', {useNewUrlParser: true});
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 app.listen(port,function() {
@@ -21,10 +21,10 @@ db.once('open', function() {
   });
 });
 
-const xxx = db.collection('users')
+const collection = db.collection('users')
 
 app.get('/', async function (req, res) {
-  const documents = await xxx.find().toArray()
+  const documents = await collection.find().toArray()
   console.log(documents);
   res.send(documents);
 })
