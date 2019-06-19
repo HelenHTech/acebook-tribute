@@ -21,7 +21,8 @@
   },
   "homepage": "https://github.com/HelenHTech/acebook-tribute#readme",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "mongoose": "^5.6.0"
   },
   "devDependencies": {
     "jest": "^24.8.0"
