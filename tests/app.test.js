@@ -1,5 +1,18 @@
-const sum = require('../sum');
+const app = require('../app')
+const request = require('supertest');
 
-test('adds 1 + 2 to equal 3', () => {
-  expect(sum(1, 2)).toBe(3);
-});
+describe('acebook index page', () => {
+  test('shows index page', () => {
+    return request(app)
+    .get('/')
+    .expect('Content-Type', 'text/html; charset=utf-8')
+  })
+})
+
+describe('acebook posts page', () => {
+  test('shows posts page', () => {
+    return request(app)
+    .get('/posts')
+    .expect(200)
+  })
+})

@@ -57,3 +57,9 @@ app.get('/test', async function (req, res) {
 app.get('/', (req, res) => {
   res.render('index');
 });
+
+app.get('/posts', (req, res) => {
+  res.send('Hello');
+});
+
+module.exports = app;
