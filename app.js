@@ -1,5 +1,8 @@
 const express = require('express')
+const bodyParser = require('body-parser')
 const app = express()
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: false }))
 const port = process.env.PORT || 8080;
 const mongoose = require('mongoose');
 require('./server/models/users')
