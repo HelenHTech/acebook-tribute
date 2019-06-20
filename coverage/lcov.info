@@ -8,11 +8,11 @@ FN:49,(anonymous_4)
 FN:57,(anonymous_5)
 FN:61,(anonymous_6)
 FNF:7
-FNH:6
+FNH:5
 FNDA:1,(anonymous_0)
 FNDA:1,(anonymous_1)
 FNDA:1,(anonymous_2)
-FNDA:1,(anonymous_3)
+FNDA:0,(anonymous_3)
 FNDA:0,(anonymous_4)
 FNDA:1,(anonymous_5)
 FNDA:1,(anonymous_6)
@@ -45,7 +45,7 @@ DA:36,1
 DA:38,1
 DA:39,1
 DA:40,1
-DA:41,1
+DA:41,0
 DA:46,1
 DA:47,1
 DA:49,1
@@ -60,7 +60,7 @@ DA:61,1
 DA:62,1
 DA:65,1
 LF:43
-LH:38
+LH:37
 BRDA:14,0,0,1
 BRDA:14,0,1,1
 BRDA:20,1,0,1
@@ -68,9 +68,9 @@ BRDA:20,1,1,1
 BRDA:33,2,0,0
 BRDA:33,2,1,1
 BRDA:41,3,0,0
-BRDA:41,3,1,1
+BRDA:41,3,1,0
 BRF:8
-BRH:6
+BRH:5
 end_of_record
 TN:
 SF:/Users/manisha.patel/Project/acebook-tribute/sum.js
