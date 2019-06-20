@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "jest --coverage --verbose ./tests",
+    "test": "jest --coverage --verbose ./tests --detectOpenHandles",
     "start": "nodemon app.js"
   },
   "repository": {
