@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const exphbs = require('express-handlebars');
+// const { check } = require('express-validator');
 const path = require('path')
 const app = express();
 
@@ -27,7 +28,7 @@ db.once('open', function() {
 
   const Users = mongoose.model('Users');
   // const user1 = new User({ name: 'Helen', email: 'helen@gmail.com', password: '1234' })
-  const user2 = new Users({ name: 'Sam', email: 'sam@gmail.com', password: '1234Agh' })
+  const user2 = new Users({ name: 'Sam', email: 'sam.gmail.com', password: '1234Agh' })
   console.log(user2.name);
   user2.save(function (err, user2) {
     if (err) return console.error(err);
@@ -49,9 +50,11 @@ const collection2 = db.collection('posts');
 app.get('/test', async function (req, res) {
   const documents = await collection.find().toArray()
   console.log(documents);
+  const email = req.body.email
+  console.log("checking for email", email)
   const documents2 = await collection2.find().toArray()
   console.log(documents2);
-  res.send(documents2);
+  res.send(documents);
 });
 
 app.get('/', (req, res) => {
