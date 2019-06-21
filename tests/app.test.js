@@ -1,5 +1,4 @@
 const app = require('../app')
-// afterEach(() => app.close())
 const request = require('supertest');
 
 describe('acebook index page', () => {
@@ -16,5 +15,12 @@ describe('acebook posts page', () => {
     return request(app)
     .get('/posts')
     .expect(200)
+    .end()
   })
+})
+
+test('teardown', t => {
+  app.close()
+  mongoose.connection.close()
+  t.end() 
 })

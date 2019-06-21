@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const exphbs = require('express-handlebars');
 const path = require('path')
 const app = express();
+const skipInit = process.env.NODE_ENV === "test"
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -25,7 +26,7 @@ app.listen(port,function() {
   console.log("app running on port 8080"); })
 db.once('open', function() {
 
-  const Users = mongoose.model('Users');
+  const Users = mongoose.model('Users', skipInit);
   // const user1 = new User({ name: 'Helen', email: 'helen@gmail.com', password: '1234' })
   const user2 = new Users({ name: 'Sam', email: 'sam@gmail.com', password: '1234Agh' })
   console.log(user2.name);
