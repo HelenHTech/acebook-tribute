@@ -59,7 +59,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/posts', (req, res) => {
-  res.send('Hello');
+  res.render('posts');
 });
 
 module.exports = { app, server };
