@@ -1,5 +1,24 @@
-const sum = require('../sum');
+const { app, server } = require('../app')
+// afterEach(() => app.close())
+const request = require('supertest');
+const connectionFactory = require('mongoose');
 
-test('adds 1 + 2 to equal 3', () => {
-  expect(sum(1, 2)).toBe(3);
+describe('acebook index page', () => {
+  test('shows index page', () => {
+    return request(app)
+    .get('/')
+    .expect(200)
+  })
+})
+
+describe('acebook posts page', () => {
+  test('shows posts page', () => {
+    return request(app)
+    .get('/posts')
+    .expect(200)
+  })
+})
+
+afterAll(() => {
+server.close();
 });

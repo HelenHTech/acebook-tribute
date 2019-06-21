@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "jest --coverage --verbose ./tests",
+    "test": "jest --coverage --verbose ./tests --detectOpenHandles --forceExit",
     "start": "nodemon app.js"
   },
   "repository": {
@@ -24,7 +24,8 @@
     "body-parser": "^1.19.0",
     "express": "^4.17.1",
     "express-handlebars": "^3.1.0",
-    "mongoose": "^5.6.0"
+    "mongoose": "^5.6.0",
+    "supertest": "^4.0.2"
   },
   "devDependencies": {
     "jest": "^24.8.0",
