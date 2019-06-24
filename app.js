@@ -4,7 +4,7 @@ const exphbs = require('express-handlebars');
 const path = require('path');
 const app = express();
 const signUp = require('./server/controllers/usersController');
-// const Users = require('./server/models/users');
+const submitPost = require('./server/controllers/postsController');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -63,6 +63,7 @@ app.get('/sign-up', (req, res) => {
   res.redirect('posts');
 });
 app.post('/sign-up', signUp);
+app.post('/posts', submitPost);
 
 app.get('/posts', (req, res) => {
   res.render('posts');
