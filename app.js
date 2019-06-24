@@ -1,13 +1,15 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const exphbs = require('express-handlebars');
-const path = require('path')
+const path = require('path');
 const app = express();
+const signUp = require('./server/controllers/usersController');
+// const Users = require('./server/models/users');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.engine('html', exphbs());
-app.set('views', path.join(__dirname, './views' ))
+app.set('views', path.join(__dirname, './views' ));
 // app.engine('html', exphbs({defaultLayout: 'index', extname: '.html'}));
 app.set('view engine', 'html');
 
@@ -19,7 +21,7 @@ require('./server/models/posts');
 
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/acebook', {useNewUrlParser: true});
 
-// const db = mongoose.connection;
+const db = mongoose.connection;
 // db.on('error', console.error.bind(console, 'connection error:'));
 const server = app.listen(port,function() {
   console.log("app running on port 8080"); })
@@ -46,17 +48,21 @@ const server = app.listen(port,function() {
 // const collection = db.collection('users');
 // const collection2 = db.collection('posts'); 
 
-app.get('/test', async function (req, res) {
-  const documents = await collection.find().toArray()
-  console.log(documents);
-  const documents2 = await collection2.find().toArray()
-  console.log(documents2);
-  res.send(documents2);
-});
+// app.get('/test', async function (req, res) {
+//   const documents = await collection.find().toArray()
+//   console.log(documents);
+//   const documents2 = await collection2.find().toArray()
+//   console.log(documents2);
+//   res.send(documents2);
+// });
 
-app.get('/', (req, res) => {
+app.get('/', async (req, res) => {
   res.render('index');
 });
+app.get('/sign-up', (req, res) => {
+  res.redirect('posts');
+});
+app.post('/sign-up', signUp);
 
 app.get('/posts', (req, res) => {
   res.render('posts');
