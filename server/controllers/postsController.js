@@ -6,7 +6,8 @@ const submitPost = async (req, res, next) => {
 
   try {
     await newPost.save();
-    res.redirect('posts');
+    data = req.body;
+    res.redirect('listposts');
     next();
   } catch (error) {
     console.log('Error with catch', error);

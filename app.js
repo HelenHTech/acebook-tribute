@@ -66,7 +66,13 @@ app.post('/sign-up', signUp);
 app.post('/posts', submitPost);
 
 app.get('/posts', (req, res) => {
-  res.render('posts');
+  const { name, title, message } = req.body;
+  res.render('posts',  { name, title, title });
 });
+app.get('/listposts', (req, res) => {
+  // const { name, title, message } = req.body;
+  res.render('listposts', data);
+});
+app.post('/listposts', submitPost);
 
 module.exports = { app, server };
