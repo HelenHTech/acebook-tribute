@@ -16,12 +16,3 @@ const signUp = async (req, res, next) => {
 };
 
 module.exports = signUp;
-
-// app.get('/', async (req, res) => {
-//   db(function(db) {
-//     delete req.body._id;
-//     collection.insertOne(req.body);
-//   })
-//   res.render('index');
-//   console.log('This should have data:', req.body);
-// });
