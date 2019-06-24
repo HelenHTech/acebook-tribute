@@ -3,8 +3,8 @@ const bodyParser = require('body-parser');
 const exphbs = require('express-handlebars');
 const path = require('path');
 const app = express();
-// const signUp = require('./server/controllers/usersController');
-const Users = require('./server/models/users');
+const signUp = require('./server/controllers/usersController');
+// const Users = require('./server/models/users');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -59,25 +59,13 @@ const server = app.listen(port,function() {
 app.get('/', async (req, res) => {
   res.render('index');
 });
-app.get('/sign-up', async (req, res) => {
+app.get('/sign-up', (req, res) => {
+  res.redirect('posts');
+});
+app.post('/sign-up', signUp);
+
+app.get('/posts', (req, res) => {
   res.render('posts');
 });
-app.post('/sign-up', async (req, res) => {
-  const { name, email, password } = req.body;
-  const newSignUp = new Users({ name, email, password });
-  try {
-    await newSignUp.save();
-    res.render('posts');
-  } catch (error) {
-    console.log('Error with catch', error);
-  } finally {
-    console.log('It worked')
-  }
-});
-
-
-// app.get('/posts', (req, res) => {
-//   res.render('posts');
-// });
 
 module.exports = { app, server };
