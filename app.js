@@ -6,7 +6,11 @@ const app = express();
 const signUp = require('./server/controllers/usersController');
 const submitPost = require('./server/controllers/postsController');
 const getPosts = require('./server/controllers/getPostsController');
-const authController = require('./server/controllers/authController')
+// const authController = require('./server/controllers/authController')
+
+// mel additions
+const usersDB = require('./server/models/users');
+const bcrypt = require('bcrypt')
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -73,9 +77,34 @@ app.post('/posts', submitPost);
 app.post('/listposts', submitPost);
 app.get('/listposts',  getPosts, (req, res) => {
   const { name, title, message } = req.body;
-  res.render('posts',  { name, title, message });
+  res.render('posts', { results: requestData });
+});
+app.get('/listposts', getPosts);
+
+
+// mel routes these should show on index page
+app.get('/login', (req, res) => { res.render('login')})
+
+app.post('/login', function (req, res, next) { 
+  const email = req.body.email;
+  const password = req.body.password;
+
+  usersDB.findOne({ email })
+    .then(function(user) {
+        return bcrypt.compare(password, user.password);
+    })
+    .then(function(samePassword) {
+        if(!samePassword) {
+            res.status(403).send();
+        }
+        res.send('buuuum done');
+    })
+    .catch(function(error){
+        console.log("Error authenticating user: ");
+        console.log(error);
+    });
 });
 
-// app.get('/listposts', getPosts);
+
 
 module.exports = { app, server };
