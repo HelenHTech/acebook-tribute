@@ -5,7 +5,7 @@ const path = require('path');
 const app = express();
 const signUp = require('./server/controllers/usersController');
 const submitPost = require('./server/controllers/postsController');
-const getPosts = require('./server/controllers/getPostsController');
+const getPost = require('./server/controllers/getPostsController');
 const authController = require('./server/controllers/authController')
 
 app.use(bodyParser.json());
@@ -61,20 +61,33 @@ const server = app.listen(port,function() {
 app.get('/', async (req, res) => {
   res.render('index');
 });
+
 app.get('/sign-up', (req, res) => {
   res.redirect('posts');
 });
+
 app.post('/sign-up', signUp);
-app.get('/posts', getPosts,  (req, res) => {
-  const { name, title, message } = req.body;
-  res.render('posts',  { name, title, message });
-});
+
 app.post('/posts', submitPost);
-app.post('/listposts', submitPost);
-app.get('/listposts',  getPosts, (req, res) => {
+
+// seperating this code, the below is retrieving data from database
+
+app.get('/posts', getPost, (req, res) => {
   const { name, title, message } = req.body;
   res.render('posts',  { name, title, message });
 });
+
+
+
+// app.post('/listposts', submitPost);
+
+
+// app.get('/listposts', getPost, (req, res) => {
+//   const { name, title, message } = req.body;
+//   result = req.body;
+//   res.render('posts',  {result});
+ 
+// });
 
 // app.get('/listposts', getPosts);
 
