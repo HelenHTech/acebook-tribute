@@ -4,7 +4,11 @@ const exphbs = require('express-handlebars');
 const path = require('path');
 const app = express();
 const signUp = require('./server/controllers/usersController');
-// const Users = require('./server/models/users');
+const submitPost = require('./server/controllers/postsController');
+const getPost = require('./server/controllers/getPostsController');
+const authController = require('./server/controllers/authController')
+const usersDB = require('./server/models/users');
+const bcrypt = require('bcrypt')
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -59,13 +63,57 @@ const server = app.listen(port,function() {
 app.get('/', async (req, res) => {
   res.render('index');
 });
+
 app.get('/sign-up', (req, res) => {
   res.redirect('posts');
 });
+
 app.post('/sign-up', signUp);
 
-app.get('/posts', (req, res) => {
-  res.render('posts');
+app.post('/posts', submitPost);
+
+// seperating this code, the below is retrieving data from database
+
+app.get('/posts', getPost, (req, res) => {
+  const { name, title, message } = req.body;
+  res.render('posts',  { name, title, message
+   });
 });
+
+app.get('/login', (req, res) => { res.render('login')})
+
+app.post('/login', function (req, res, next) { 
+  const email = req.body.email;
+  const password = req.body.password;
+
+  usersDB.findOne({ email })
+    .then(function(user) {
+        return bcrypt.compare(password, user.password);
+    })
+    .then(function(samePassword) {
+        if(!samePassword) {
+            res.status(403).send();
+        }
+        res.send('buuuum done');
+    })
+    .catch(function(error){
+        console.log("Error authenticating user: ");
+        console.log(error);
+    });
+});
+
+
+
+// app.post('/listposts', submitPost);
+
+
+// app.get('/listposts', getPost, (req, res) => {
+//   const { name, title, message } = req.body;
+//   result = req.body;
+//   res.render('posts',  {result});
+ 
+// });
+
+// app.get('/listposts', getPosts);
 
 module.exports = { app, server };
