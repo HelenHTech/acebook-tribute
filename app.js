@@ -5,6 +5,8 @@ const path = require('path');
 const app = express();
 const signUp = require('./server/controllers/usersController');
 const submitPost = require('./server/controllers/postsController');
+const getPosts = require('./server/controllers/getPostsController');
+const authController = require('./server/controllers/authController')
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -63,16 +65,17 @@ app.get('/sign-up', (req, res) => {
   res.redirect('posts');
 });
 app.post('/sign-up', signUp);
-app.post('/posts', submitPost);
-
-app.get('/posts', (req, res) => {
+app.get('/posts', getPosts,  (req, res) => {
   const { name, title, message } = req.body;
-  res.render('posts',  { name, title, title });
+  res.render('posts',  { name, title, message });
 });
-app.get('/listposts', (req, res) => {
-  // const { name, title, message } = req.body;
-  res.render('listposts', data);
-});
+app.post('/posts', submitPost);
 app.post('/listposts', submitPost);
+app.get('/listposts',  getPosts, (req, res) => {
+  const { name, title, message } = req.body;
+  res.render('posts',  { name, title, message });
+});
+
+// app.get('/listposts', getPosts);
 
 module.exports = { app, server };

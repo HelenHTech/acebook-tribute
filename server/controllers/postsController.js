@@ -16,4 +16,5 @@ const submitPost = async (req, res, next) => {
   }
 };
 
+
 module.exports = submitPost;
