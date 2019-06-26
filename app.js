@@ -3,18 +3,19 @@ const bodyParser = require('body-parser');
 const exphbs = require('express-handlebars');
 const path = require('path');
 const app = express();
+const flash = require('flash-express');
 const signUp = require('./server/controllers/usersController');
 const submitPost = require('./server/controllers/postsController');
 const getPost = require('./server/controllers/getPostsController');
-const authController = require('./server/controllers/authController')
 const usersDB = require('./server/models/users');
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcrypt');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.engine('html', exphbs());
 app.set('views', path.join(__dirname, './views' ));
 app.use(express.static('public'));
+app.use(flash());
 // app.engine('html', exphbs({defaultLayout: 'index', extname: '.html'}));
 app.set('view engine', 'html');
 
@@ -84,6 +85,7 @@ app.get('/posts', getPost, (req, res) => {
 app.get('/login', (req, res) => { res.render('login')})
 
 app.post('/login', function (req, res, next) { 
+  const option = { position:"t", duration:"5000"}
   const email = req.body.email;
   const password = req.body.password;
 
@@ -95,7 +97,8 @@ app.post('/login', function (req, res, next) {
         if(!samePassword) {
             res.status(403).send();
         }
-        res.send('buuuum done');
+        res.flash('You are now successfully logged in!', option);
+        res.render('posts');
     })
     .catch(function(error){
         console.log("Error authenticating user: ");
@@ -103,16 +106,12 @@ app.post('/login', function (req, res, next) {
     });
 });
 
-
-
 // app.post('/listposts', submitPost);
-
 
 // app.get('/listposts', getPost, (req, res) => {
 //   const { name, title, message } = req.body;
 //   result = req.body;
 //   res.render('posts',  {result});
- 
 // });
 
 // app.get('/listposts', getPosts);

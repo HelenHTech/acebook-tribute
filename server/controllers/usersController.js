@@ -12,7 +12,8 @@ const signUp = async (req, res, next) => {
       newSignUp.save(hash)
     });
     // await newSignUp.save();
-    res.redirect('login');
+    res.flash('You are now successfully signed up to Acebook!');
+    res.redirect('posts');
     next();
   } catch (error) {
     console.log('Error with catch', error);
@@ -20,6 +21,5 @@ const signUp = async (req, res, next) => {
     console.log('It worked', req.body)
   }
 };
-
 
 module.exports = signUp;
