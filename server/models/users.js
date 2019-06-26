@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const bcrypt = require('bcrypt');
 const SALT_WORK_FACTOR = 10;
+const passportLocalMongoose = require('passport-local-mongoose');
 
 const UsersSchema = new Schema({
   name: { type: String, required: true },
@@ -36,6 +37,8 @@ UsersSchema.methods.comparePassword = function(candidatePassword, cb) {
       cb(null, isMatch);
   });
 };
+
+UsersSchema.plugin(passportLocalMongoose);
 
 // Export the model for use in the app
 module.exports = mongoose.model('Users', UsersSchema);

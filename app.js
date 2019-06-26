@@ -9,21 +9,39 @@ const submitPost = require('./server/controllers/postsController');
 const getPost = require('./server/controllers/getPostsController');
 const usersDB = require('./server/models/users');
 const bcrypt = require('bcrypt');
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy
+const port = process.env.PORT || 8080;
+const mongoose = require('mongoose');
+const moflash = require('connect-flash')
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.engine('html', exphbs());
 app.set('views', path.join(__dirname, './views' ));
 app.use(express.static('public'));
-app.use(flash());
 // app.engine('html', exphbs({defaultLayout: 'index', extname: '.html'}));
 app.set('view engine', 'html');
+app.use(require('express-session')({
+  secret: 'youaremyfire',
+  resave: false,
+  saveUninitialized: false,
+  cookie: { maxAge: 1000 }
+}));
+app.use(moflash());
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(flash());
 
-const port = process.env.PORT || 8080;
-const mongoose = require('mongoose');
+
 
 require('./server/models/users');
 require('./server/models/posts');
+
+// passport config
+passport.use(new LocalStrategy(usersDB.authenticate()));
+passport.serializeUser(usersDB .serializeUser());
+passport.deserializeUser(usersDB .deserializeUser());
 
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/acebook', {useNewUrlParser: true});
 
@@ -31,36 +49,6 @@ const db = mongoose.connection;
 // db.on('error', console.error.bind(console, 'connection error:'));
 const server = app.listen(port,function() {
   console.log("app running on port 8080"); })
-// db.once('open', function() {
-
-//   const Users = mongoose.model('Users');
-//   // const user1 = new User({ name: 'Helen', email: 'helen@gmail.com', password: '1234' })
-//   const user2 = new Users({ name: 'Sam', email: 'sam@gmail.com', password: '1234Agh' })
-//   console.log(user2.name);
-//   user2.save(function (err, user2) {
-//     if (err) return console.error(err);
-//   });
-
-//   const Posts = mongoose.model('Posts');
-//   // const user1 = new User({ name: 'Helen', email: 'helen@gmail.com', password: '1234' })
-//   const post1 = new Posts({ title: 'Hi everyone', message: 'we love the backstreet boys!' })
-//   console.log(post1.name);
-//   post1.save(function (err, post1) {
-//     if (err) return console.error(err);
-//   });
-
-// });
-
-// const collection = db.collection('users');
-// const collection2 = db.collection('posts'); 
-
-// app.get('/test', async function (req, res) {
-//   const documents = await collection.find().toArray()
-//   console.log(documents);
-//   const documents2 = await collection2.find().toArray()
-//   console.log(documents2);
-//   res.send(documents2);
-// });
 
 app.get('/', async (req, res) => {
   res.render('login');
@@ -76,19 +64,24 @@ app.post('/posts', submitPost);
 
 // seperating this code, the below is retrieving data from database
 
-app.get('/posts', getPost, (req, res) => {
+app.get('/posts', passport.authenticate('local', {
+  failureRedirect: '/',
+  // Set failureFlash to true
+  failureFlash: true,
+  failureFlash: 'You must log in'
+}), getPost, (req, res) => {
   const { name, title, message } = req.body;
   res.render('posts',  { name, title, message
    });
 });
 
-app.get('/login', (req, res) => { res.render('login')})
+app.get('/login', (req, res) => { res.render('login', { email : req.body.email })})
 
 app.post('/login', function (req, res, next) { 
   const option = { position:"tl", duration:"5000" }
   const email = req.body.email;
   const password = req.body.password;
-
+  passport.authenticate('local')
   usersDB.findOne({ email })
     .then(function(user) {
         return bcrypt.compare(password, user.password);
@@ -106,14 +99,11 @@ app.post('/login', function (req, res, next) {
     });
 });
 
-// app.post('/listposts', submitPost);
+app.get('/logout', function(req, res) {
+  req.logOut();
+  req.session = null;
+  res.redirect('/');
+});
 
-// app.get('/listposts', getPost, (req, res) => {
-//   const { name, title, message } = req.body;
-//   result = req.body;
-//   res.render('posts',  {result});
-// });
-
-// app.get('/listposts', getPosts);
 
 module.exports = { app, server };

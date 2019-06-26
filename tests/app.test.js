@@ -15,7 +15,7 @@ describe('acebook posts page', () => {
   test('shows posts page', () => {
     return request(app)
     .get('/posts')
-    .expect(200)
+    .expect(302)
   });
 });
 
