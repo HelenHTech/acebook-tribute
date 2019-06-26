@@ -14,6 +14,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.engine('html', exphbs());
 app.set('views', path.join(__dirname, './views' ));
+app.use(express.static('public'));
 // app.engine('html', exphbs({defaultLayout: 'index', extname: '.html'}));
 app.set('view engine', 'html');
 
@@ -61,7 +62,7 @@ const server = app.listen(port,function() {
 // });
 
 app.get('/', async (req, res) => {
-  res.render('index');
+  res.render('login');
 });
 
 app.get('/sign-up', (req, res) => {

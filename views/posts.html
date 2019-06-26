@@ -1,17 +1,33 @@
 <!-- Successfully Signed up - This needs an if statement -->
-<div class="container" align="center">
-    <p style="text-align: left;">New Post:</p>
+<div class="container" align="center" style="text-align: left">
+    <h3 style="text-align: center">Post something:</h3>
     <form action="/posts" method="POST">
-      <div class="form-group row" style="font-size:15px">Name:&nbsp;<input type="text" name="name"></div>
+      <div class="form-group">
+          <label for="exampleFormControlInput1" style="text-align: left;">Name</label>
+          <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Your ace name" name="name">
+      </div>
+      <div class="form-group">
+          <label for="exampleFormControlInput1" style="text-align: left;">Title</label>
+          <input type="text" class="form-control" id="exampleFormControlInput1" name="title">
+      </div>
+      <div class="form-group">
+          <label for="exampleFormControlInput1" style="text-align: left;">Post</label>
+          <textarea class="form-control" aria-label="With textarea" name="message"></textarea>  
+      </div>
+      <!-- <div class="form-group row" style="font-size:15px">Name:&nbsp;<input type="text" name="name"></div>
       <div class="form-group row" style="font-size:15px">Title:&nbsp;<input type="text" name="title"></div>
-      <div class="form-group row" style="font-size:15px">Posts:&nbsp;<input type="text" name="message"></div>
-      <div class="form-group row" style="font-size:15px"><input type="submit" value="Post my post"></div>
+      <div class="input-group input-group-lg">
+          <div class="form-group row" style="font-size:15px">
+          Posts:&nbsp;<textarea class="form-control" aria-label="With textarea" name="message"></textarea>
+          </div>
+      </div> -->
+      <button type="submit" class="btn btn-primary" value="Post my post">Post my post</button>
     </form>
   </div>
 
-  <h2>Your Posts:</h2>
+  <h3>Your Posts:</h3>
   <div class="container" style="padding: 20px">
-  results from getPostsController<br/><br/>
+  
   {{#each results}}
   <div class="container" style="padding: 20px">
     <div class="card" style="width: 28rem;">
