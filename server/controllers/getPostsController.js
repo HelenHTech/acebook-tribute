@@ -3,18 +3,22 @@ const Posts = require('./../models/posts');
 const getPost = async (req, res) => {
 
   try {
-    const requestData = await Posts.find({});
+    const requestData = await Posts.find({}).sort({time_posted: 'descending'})
     res.render('posts', { results: requestData });
-    // next();
+  } catch (error) {
+    console.log('Error with catch', error);
+  } 
+};
+
+const deletePost = async (req, res) => {
+
+  try {
+    const deletePost = await Posts.find({postId});
+    res.render('posts', { results: deletePost });
   } catch (error) {
     console.log('Error with catch', error);
     
   } 
-  // finally {
-  //   console.log ("lllllll")
-  //   console.log('finding worked', requestData)
-  //   console.log ("pppppppppp")
-  // }
 };
 
-module.exports = getPost
+module.exports = getPost, deletePost;

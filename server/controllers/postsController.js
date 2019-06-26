@@ -6,7 +6,7 @@ const submitPost = async (req, res, next) => {
 
   try {
     await newPost.save();
-    data = req.body;
+    // data = req.body;
     res.redirect('posts');
     next();
   } catch (error) {
