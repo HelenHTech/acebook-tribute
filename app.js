@@ -106,14 +106,4 @@ app.post('/login', function (req, res, next) {
     });
 });
 
-// app.post('/listposts', submitPost);
-
-// app.get('/listposts', getPost, (req, res) => {
-//   const { name, title, message } = req.body;
-//   result = req.body;
-//   res.render('posts',  {result});
-// });
-
-// app.get('/listposts', getPosts);
-
 module.exports = { app, server };
