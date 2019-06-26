@@ -85,7 +85,7 @@ app.get('/posts', getPost, (req, res) => {
 app.get('/login', (req, res) => { res.render('login')})
 
 app.post('/login', function (req, res, next) { 
-  const option = { position:"t", duration:"5000"}
+  const option = { position:"tl", duration:"5000" }
   const email = req.body.email;
   const password = req.body.password;
 
@@ -97,7 +97,7 @@ app.post('/login', function (req, res, next) {
         if(!samePassword) {
             res.status(403).send();
         }
-        res.flash('You are now successfully logged in!', option);
+        res.flash('You are now successfully logged in!', 'info', option);
         res.render('posts');
     })
     .catch(function(error){
