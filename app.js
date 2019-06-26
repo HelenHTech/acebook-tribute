@@ -6,10 +6,19 @@ const app = express();
 const signUp = require('./server/controllers/usersController');
 const submitPost = require('./server/controllers/postsController');
 const getPost = require('./server/controllers/getPostsController');
-const authController = require('./server/controllers/authController')
 const usersDB = require('./server/models/users');
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcrypt');
+//mel adds
+const passport = require('passport');
+const flash = require('connect-flash');
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
+const local = require('./server/config/passport')
 
+
+//set up for express
+app.use(cookieParser()); //mel adds to read cookies for auth
+app.use(passport.initialize());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.engine('html', exphbs());
@@ -18,6 +27,9 @@ app.use(express.static('public'));
 // app.engine('html', exphbs({defaultLayout: 'index', extname: '.html'}));
 app.set('view engine', 'html');
 
+
+
+//tidying 
 const port = process.env.PORT || 8080;
 const mongoose = require('mongoose');
 
@@ -25,41 +37,25 @@ require('./server/models/users');
 require('./server/models/posts');
 
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/acebook', {useNewUrlParser: true});
-
 const db = mongoose.connection;
-// db.on('error', console.error.bind(console, 'connection error:'));
-const server = app.listen(port,function() {
-  console.log("app running on port 8080"); })
-// db.once('open', function() {
+//mel adds for passport
 
-//   const Users = mongoose.model('Users');
-//   // const user1 = new User({ name: 'Helen', email: 'helen@gmail.com', password: '1234' })
-//   const user2 = new Users({ name: 'Sam', email: 'sam@gmail.com', password: '1234Agh' })
-//   console.log(user2.name);
-//   user2.save(function (err, user2) {
-//     if (err) return console.error(err);
-//   });
+// app.use(session({ secret: 'singbumbumbum'})); //session secret
+app.set('trust proxy', 1)
+const sess = {
+  secret: 'singbumbumbum',
+  cookie: {}
+}
 
-//   const Posts = mongoose.model('Posts');
-//   // const user1 = new User({ name: 'Helen', email: 'helen@gmail.com', password: '1234' })
-//   const post1 = new Posts({ title: 'Hi everyone', message: 'we love the backstreet boys!' })
-//   console.log(post1.name);
-//   post1.save(function (err, post1) {
-//     if (err) return console.error(err);
-//   });
+if (app.get('env') === 'production') {
+  app.set('trust proxy, 1')//trust first proxy
+  sess.cookie.secure = true
+}
+// app.use(session(sess))
+app.use(passport.initialize());
+app.use(passport.session(sess));
+app.use(flash(sess)); //use connect-flash for flash messages stored in the session
 
-// });
-
-// const collection = db.collection('users');
-// const collection2 = db.collection('posts'); 
-
-// app.get('/test', async function (req, res) {
-//   const documents = await collection.find().toArray()
-//   console.log(documents);
-//   const documents2 = await collection2.find().toArray()
-//   console.log(documents2);
-//   res.send(documents2);
-// });
 
 app.get('/', async (req, res) => {
   res.render('login');
@@ -71,7 +67,7 @@ app.get('/sign-up', (req, res) => {
 
 app.post('/sign-up', signUp);
 
-app.post('/posts', submitPost);
+app.post('/posts', isLoggedIn, submitPost);
 
 // seperating this code, the below is retrieving data from database
 
@@ -82,39 +78,88 @@ app.get('/posts', getPost, (req, res) => {
 });
 
 app.get('/login', (req, res) => { res.render('login')})
+// app.post('/login',
+//   passport.authenticate('local'),
+//   function(req, res) {
+//     console.log('get user', req.email)
+//     res.send(req.email);
+//   }
+// );
+app.post('/login',
+  passport.authenticate('local', { successRedirect: '/posts',
+                                   failureRedirect: '/noaccess'})
+);
 
-app.post('/login', function (req, res, next) { 
-  const email = req.body.email;
-  const password = req.body.password;
+// app.post('/login', function (req, res, next) { 
+//   const email = req.body.email;
+//   const password = req.body.password;
 
-  usersDB.findOne({ email })
-    .then(function(user) {
-        return bcrypt.compare(password, user.password);
-    })
-    .then(function(samePassword) {
-        if(!samePassword) {
-            res.status(403).send();
-        }
-        res.send('buuuum done');
-    })
-    .catch(function(error){
-        console.log("Error authenticating user: ");
-        console.log(error);
-    });
-});
+//   usersDB.findOne({ email })
+//     .then(function(user) {
+//         return bcrypt.compare(password, user.password);
+//     })
+//     .then(function(samePassword) {
+//         if(!samePassword) {
+//             res.status(403).send();
+//         }
+//         res.send('buuuum done');
+//     })
+//     .catch(function(error){
+//         console.log("Error authenticating user: ");
+//         console.log(error);
+//     });
 
-
-
-// app.post('/listposts', submitPost);
-
-
-// app.get('/listposts', getPost, (req, res) => {
-//   const { name, title, message } = req.body;
-//   result = req.body;
-//   res.render('posts',  {result});
- 
 // });
 
-// app.get('/listposts', getPosts);
+// app.post('/login', function (req, res, next) { 
+//   passport.use(new LocalStrategy(
+//     function(email, password, done) {
+//       usersDB.findOne({ email })
+//       .then(function(user) {
+//           return bcrypt.compare(password, user.password);
+//       })
+//       .then(function(samePassword) {
+//           if(!samePassword) {
+//               res.status(403).send();
+//           }
+//           res.send('buuuum done');
+//       })
+//       .catch(function(error){
+//           console.log("Error authenticating user: ");
+//           console.log(error);
+//       });
+//     }
+//   ));
+// });
+
+
+
+// mel adds
+app.get('/noaccess', function(req, res) { 
+  res.render('noaccess') 
+})
+// a secure route
+app.get('/profile', isLoggedIn, function(req, res) {
+  res.render('profile.ejs', {
+      user : req.user // get the user out of session and pass to template
+  });
+});
+app.get('/logout', function(req, res) {
+  req.logout();
+  res.redirect('/');
+});
+// check the users is logged in
+function isLoggedIn(req, res, next) {
+
+  // if user is authenticated in the session, carry on 
+  if (req.isAuthenticated())
+      return next();
+
+  // if they aren't redirect them to the home page
+  res.redirect('/noaccess');
+}
+
+const server = app.listen(port,function() {
+  console.log("app running on port 8080"); })
 
 module.exports = { app, server };
