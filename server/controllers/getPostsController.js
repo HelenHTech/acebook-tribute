@@ -34,12 +34,10 @@ const deletePost = async (req, res) => {
   } 
 };
 
-const editPost = (req, res) => {
-
-  Posts.findByIdAndUpdate(req.params.id, {$set: req.body}, function (err, product) {
-  if (err) return next(err);
-  res.locals.id = postID;
-  });
+const editPost = async (req, res) => {
+  const edit = await Posts.update({_id: req.params.id}, {$set: {message: req.params.message}})
+  return edit
 }
 
-module.exports = getPost, deletePost, editPost;
+
+module.exports = getPost, deletePost, editPost

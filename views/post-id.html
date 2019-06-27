@@ -1,12 +1,9 @@
-
-{{id}
 <div class="container" style="padding: 20px">
   <div class="card" style="width: 28rem;">
       <div class="card-body">
-        <h5 class="card-title">{{title}}</h5>
-        <p class="card-text">{{message}}</p>
-        <a href="#" class="card-link">{{this.time_posted}}</a>
-        <p class="card-text">{{id}}</p>
+        <h5 class="card-title">{{ post.title }}</h5>
+        <h5 class="card-title">{{ post.message }}</h5>
+        <a href="/post/{{post.title}}">edit</a>
       </div>
     </div>
   </div>

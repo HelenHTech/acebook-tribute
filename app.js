@@ -10,6 +10,7 @@ const getPost = require('./server/controllers/getPostsController');
 const editPost = require('./server/controllers/getPostsController');
 const usersDB = require('./server/models/users');
 const bcrypt = require('bcrypt');
+const postsDB = require('./server/models/posts');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -29,39 +30,10 @@ require('./server/models/posts');
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/acebook', {useNewUrlParser: true});
 
 const db = mongoose.connection;
-// db.on('error', console.error.bind(console, 'connection error:'));
+
 const server = app.listen(port,function() {
   console.log("app running on port 8080"); })
-// db.once('open', function() {
 
-//   const Users = mongoose.model('Users');
-//   // const user1 = new User({ name: 'Helen', email: 'helen@gmail.com', password: '1234' })
-//   const user2 = new Users({ name: 'Sam', email: 'sam@gmail.com', password: '1234Agh' })
-//   console.log(user2.name);
-//   user2.save(function (err, user2) {
-//     if (err) return console.error(err);
-//   });
-
-//   const Posts = mongoose.model('Posts');
-//   // const user1 = new User({ name: 'Helen', email: 'helen@gmail.com', password: '1234' })
-//   const post1 = new Posts({ title: 'Hi everyone', message: 'we love the backstreet boys!' })
-//   console.log(post1.name);
-//   post1.save(function (err, post1) {
-//     if (err) return console.error(err);
-//   });
-
-// });
-
-// const collection = db.collection('users');
-// const collection2 = db.collection('posts'); 
-
-// app.get('/test', async function (req, res) {
-//   const documents = await collection.find().toArray()
-//   console.log(documents);
-//   const documents2 = await collection2.find().toArray()
-//   console.log(documents2);
-//   res.send(documents2);
-// });
 
 app.get('/', async (req, res) => {
   res.render('login');
@@ -81,15 +53,6 @@ app.get('/posts', getPost, (req, res) => {
   const { name, title, message, id } = req.body;
   res.render('posts',  { name, title, message, id});
 });
-
-app.get('/posts/:id', (req, res) => {
-  const { id } = req.body;
-  res.render('post-id',  { id });
-});
-// app.get('/pages/newsletters/:id([a-f0-9]{24})/subscribe/success', getNewsletter, (req, res) => {
-// 	const name = res.locals.data;
-// 	res.render('oneclick/subscribe-success', { name });
-// });
 
 app.get('/login', (req, res) => { res.render('login')})
 
@@ -122,8 +85,51 @@ app.post('/postman', function(req, res) {
   res.status(200).send("yay");
 });
 
+app.get('/post-edit', editPost);
+
 app.get('/:id/update', editPost, (req, res) => {
   const name = res.locals.postID;
   res.render('post-edit', { name });
 });
+
+
+app.get('/post/:title', async (req, res) => {
+    const post = await postsDB.find({title: req.params.title})
+    console.log(post, 'a post')
+    res.render('post-id', {
+        post
+    })
+});
+
+app.get('/posty/:id', async (req, res) => {
+  const post = await postsDB.findById(req.params.id)
+  console.log(post, 'a post')
+  res.render('post-edit', {
+      post
+  })
+});
+
+app.get('/post/edit/:id', async (req, res) => {
+  const post = await postsDB.findById(req.params.id)
+  console.log(post, 'a post')
+  res.render('post-edit', {
+      post
+  })
+});
+
+
+app.get('/edit/:title', async (req, res) => {
+  const post = await postsDB.updateOne({ title: req.params.title}, {$set: {message: req.body.message}})
+  console.log(post, 'a post')
+  res.render('posts', {
+      post
+  })
+});
+
+app.post('/edit/:title', async (req, res) => {
+  const post = await postsDB.updateOne({ title: req.params.title}, {$set: {message: req.body.message}})
+  console.log(post, 'a post')
+  res.redirect('/posts')
+});
+
 module.exports = { app, server };
