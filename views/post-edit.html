@@ -1,0 +1,32 @@
+<div class="container" align="center" style="text-align: left">
+    <h3 style="text-align: center">Post something:</h3>
+    <form action="/posts" method="POST">
+      <div class="form-group">
+          <label for="exampleFormControlInput1" style="text-align: left;">Title</label>
+          <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="{{this.title}}" name="title">
+      </div>
+      <div class="form-group">
+          <label for="exampleFormControlInput1" style="text-align: left;">Post</label>
+          <textarea class="form-control" aria-label="With textarea" name="message">{{this.message}}</textarea>  
+      </div>
+      <button type="submit" class="btn btn-primary" value="Post my post">Post my new post</button>
+    </form>
+  </div>
+
+
+
+<!-- <div class="container" style="padding: 20px">
+    <div class="card" style="width: 28rem;">
+        <div class="card-body">
+          <h5 class="card-title">{{this.title}}</h5>
+          <h6 class="card-subtitle mb-2 text-muted">by: {{this.user.users.name}}</h6>
+          <p class="card-text">{{this.message}}</p>
+          <a href="#" class="card-link">{{this.time_posted}}</a>
+          <div class="card-link">
+              <form action="/post-edit" method="POST">
+                <button type="submit" class="btn btn-primary" value="edit">edit</button>
+              </form>
+          </div>
+        </div>
+      </div>
+    </div> -->

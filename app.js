@@ -7,6 +7,7 @@ const flash = require('flash-express');
 const signUp = require('./server/controllers/usersController');
 const submitPost = require('./server/controllers/postsController');
 const getPost = require('./server/controllers/getPostsController');
+const editPost = require('./server/controllers/getPostsController');
 const usersDB = require('./server/models/users');
 const bcrypt = require('bcrypt');
 
@@ -72,15 +73,23 @@ app.get('/sign-up', (req, res) => {
 
 app.post('/sign-up', signUp);
 
-app.post('/posts', submitPost);
+app.post('/posts', submitPost );
 
 // seperating this code, the below is retrieving data from database
 
 app.get('/posts', getPost, (req, res) => {
-  const { name, title, message } = req.body;
-  res.render('posts',  { name, title, message
-   });
+  const { name, title, message, id } = req.body;
+  res.render('posts',  { name, title, message, id});
 });
+
+app.get('/posts/:id', (req, res) => {
+  const { id } = req.body;
+  res.render('post-id',  { id });
+});
+// app.get('/pages/newsletters/:id([a-f0-9]{24})/subscribe/success', getNewsletter, (req, res) => {
+// 	const name = res.locals.data;
+// 	res.render('oneclick/subscribe-success', { name });
+// });
 
 app.get('/login', (req, res) => { res.render('login')})
 
@@ -106,14 +115,15 @@ app.post('/login', function (req, res, next) {
     });
 });
 
-// app.post('/listposts', submitPost);
+app.post('/postman', function(req, res) {
+  console.log("Yoooooo");
+  console.log(req.headers);
+  console.log(req.body, 'anybody out there?');
+  res.status(200).send("yay");
+});
 
-// app.get('/listposts', getPost, (req, res) => {
-//   const { name, title, message } = req.body;
-//   result = req.body;
-//   res.render('posts',  {result});
-// });
-
-// app.get('/listposts', getPosts);
-
+app.get('/:id/update', editPost, (req, res) => {
+  const name = res.locals.postID;
+  res.render('post-edit', { name });
+});
 module.exports = { app, server };
