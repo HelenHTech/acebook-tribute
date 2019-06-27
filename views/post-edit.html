@@ -1,15 +1,23 @@
+
 <div class="container" align="center" style="text-align: left">
-    <h3 style="text-align: center">Post something:</h3>
-    <form action="/edit/{{ post.title }}" method="POST">
-      <div class="form-group">
-          <p>{{ post.title }}</label>
+  <div class="container" style="padding: 20px">
+    <div class="card" style="width: 28rem;">
+        <div class="card-body">
+          <h3 style="text-align: center">Editing your post: 🖋</h3>
+          <br />
+          <form action="/edit/{{ post.title }}" method="POST">
+            <div class="form-group">
+                <p style="font-weight: bold;">Post title: {{ post.title }}</label>
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlInput1" style="text-align: left; font-weight: bold;">Your new post</label>
+                <textarea class="form-control" aria-label="With textarea" name="message">{{ post.message }}</textarea>  
+            </div>
+            <button type="submit" class="btn btn-primary" value="Post my post">Post my new post</button>
+          </form>
+        </div>
       </div>
-      <div class="form-group">
-          <label for="exampleFormControlInput1" style="text-align: left;">Post</label>
-          <textarea class="form-control" aria-label="With textarea" name="message">{{ post.message }}</textarea>  
-      </div>
-      <button type="submit" class="btn btn-primary" value="Post my post">Post my new post</button>
-    </form>
+    </div>
   </div>
 
 
