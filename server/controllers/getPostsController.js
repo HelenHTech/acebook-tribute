@@ -1,10 +1,23 @@
 const Posts = require('./../models/posts');
 
+// const getPost = async (req, res) => {
+
+//   try {
+//     const requestData = await Posts.find({}).sort({time_posted: 'descending'})
+//     res.render('posts', { results: requestData });
+//   } catch (error) {
+//     console.log('Error with catch', error);
+//   } 
+// };
+
+
 const getPost = async (req, res) => {
 
   try {
     const requestData = await Posts.find({}).sort({time_posted: 'descending'})
+    res.locals.data = requestData
     res.render('posts', { results: requestData });
+    console.log(res.locals.id);
   } catch (error) {
     console.log('Error with catch', error);
   } 
@@ -21,4 +34,10 @@ const deletePost = async (req, res) => {
   } 
 };
 
-module.exports = getPost, deletePost;
+const editPost = async (req, res) => {
+  const edit = await Posts.update({_id: req.params.id}, {$set: {message: req.params.message}})
+  return edit
+}
+
+
+module.exports = getPost, deletePost, editPost

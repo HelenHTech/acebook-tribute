@@ -1,0 +1,39 @@
+
+<div class="container" align="center" style="text-align: left">
+  <div class="container" style="padding: 20px">
+    <div class="card" style="width: 28rem;">
+        <div class="card-body">
+          <h3 style="text-align: center">Editing your post: 🖋</h3>
+          <br />
+          <form action="/edit/{{ post.title }}" method="POST">
+            <div class="form-group">
+                <p style="font-weight: bold;">Post title: {{ post.title }}</label>
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlInput1" style="text-align: left; font-weight: bold;">Your new post</label>
+                <textarea class="form-control" aria-label="With textarea" name="message">{{ post.message }}</textarea>  
+            </div>
+            <button type="submit" class="btn btn-primary" value="Post my post">Post my new post</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+<!-- <div class="container" style="padding: 20px">
+    <div class="card" style="width: 28rem;">
+        <div class="card-body">
+          <h5 class="card-title">{{this.title}}</h5>
+          <h6 class="card-subtitle mb-2 text-muted">by: {{this.user.users.name}}</h6>
+          <p class="card-text">{{this.message}}</p>
+          <a href="#" class="card-link">{{this.time_posted}}</a>
+          <div class="card-link">
+              <form action="/post-edit" method="POST">
+                <button type="submit" class="btn btn-primary" value="edit">edit</button>
+              </form>
+          </div>
+        </div>
+      </div>
+    </div> -->
