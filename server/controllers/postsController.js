@@ -1,8 +1,12 @@
 const Posts = require('./../models/posts');
+const Users = require('./../models/users');
 
 const submitPost = async (req, res, next) => {
   const { title, message } = req.body;
-  const newPost = new Posts({ title, message });
+  const newPost = new Posts({ 
+    title, 
+    message
+   });
   
 
   try {

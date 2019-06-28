@@ -14,10 +14,10 @@ const Posts = require('./../models/posts');
 const getPost = async (req, res) => {
 
   try {
-    const requestData = await Posts.find({}).sort({time_posted: 'descending'})
+    const requestData = await Posts.find({}).sort({time_posted: 'descending'}).populate('name')
     res.locals.data = requestData
     res.render('posts', { results: requestData });
-    console.log(res.locals.id);
+    console.log(requestData);
   } catch (error) {
     console.log('Error with catch', error);
   } 
