@@ -28,12 +28,12 @@
   <div class="container" style="padding: 20px">
     <div class="card" style="width: 28rem;">
         <div class="card-body">
-          <h5 class="card-title">{{this.title}}</h5>
-          <h6 class="card-subtitle mb-2 text-muted">by: {{this.user.users.name}}</h6>
-          <p class="card-text">{{this.message}}</p>
-          <a href="#" class="card-link">{{this.time_posted}}</a>
-          <p class="card-text">{{this.id}}</p>
-          <a href="/posty/{{this.id}}">edit</a>
+          <h5 class="card-title" style="text-align: left;">{{this.title}}</h5>
+          <!-- <h6 class="card-subtitle mb-2 text-muted">by: {{this.user.users.name}}</h6> -->
+          <p class="card-text" style="text-align: left;">{{this.message}}</p>
+          <p style="text-align: left;"><a href="#" class="card-link" style="text-align: left;">{{this.time_posted}}</a></p>
+          <p><a href="/posty/{{this.id}}" class="btn btn-outline-info" >Edit&nbsp;✏️</a>&nbsp;&nbsp;&nbsp;&nbsp;
+          <a href="/delete/{{this.id}}" class="btn btn-outline-danger">Delete&nbsp;❌</a></p>
         </div>
       </div>
     </div>
