@@ -18,7 +18,6 @@ app.engine('html', exphbs());
 app.set('views', path.join(__dirname, './views' ));
 app.use(express.static('public'));
 app.use(flash());
-// app.engine('html', exphbs({defaultLayout: 'index', extname: '.html'}));
 app.set('view engine', 'html');
 
 const port = process.env.PORT || 8080;
@@ -32,7 +31,7 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/acebook', {useN
 const db = mongoose.connection;
 
 const server = app.listen(port,function() {
-  console.log("app running on port 8080"); })
+  console.log("Your local version of acebook-tribute .🐯. running on port .🐳. http://localhost:8080/"); })
 
 
 app.get('/', async (req, res) => {
@@ -128,6 +127,18 @@ app.get('/edit/:title', async (req, res) => {
 
 app.post('/edit/:title', async (req, res) => {
   const post = await postsDB.updateOne({ title: req.params.title}, {$set: {message: req.body.message}})
+  console.log(post, 'a post')
+  res.redirect('/posts')
+});
+
+app.get('/delete/:id', async (req, res) => {
+  const post = await postsDB.findByIdAndRemove({ _id: req.params.id})
+  console.log(post, 'a post')
+  res.redirect('/posts')
+});
+
+app.get('/like/:id', async (req, res) => {
+  const post = await postsDB.findOneAndUpdate({ _id: req.params.id}, {$inc : {likes: 1}})
   console.log(post, 'a post')
   res.redirect('/posts')
 });
