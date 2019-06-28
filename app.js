@@ -137,4 +137,10 @@ app.get('/delete/:id', async (req, res) => {
   res.redirect('/posts')
 });
 
+app.get('/like/:id', async (req, res) => {
+  const post = await postsDB.findOneAndUpdate({ _id: req.params.id}, {$inc : {likes: 1}})
+  console.log(post, 'a post')
+  res.redirect('/posts')
+});
+
 module.exports = { app, server };
